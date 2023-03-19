@@ -22,15 +22,21 @@
         {
           roundrobin = roundrobin;
           psycogreen = psycogreen;
-          locust = pkgs.callPackage ./packages/locust {
-            inherit roundrobin;
-          };
           extensions = {
             locust-timescale = pkgs.callPackage ./packages/locust-timescale {
               inherit psycogreen;
             };
           };
-          locust-timescale = self.packages.${system}.locust.overrideAttrs (
+          locust = pkgs.callPackage ./packages/locust {
+            inherit roundrobin;
+          };
+          locust-full = self.packages.${system}.locust.overrideAttrs (
+            oldAttrs:
+            {
+              propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [ pkgs.python311Packages.requests pkgs.python311Packages.faker pkgs.python311Packages.beautifulsoup4 ];
+            }
+          );
+          locust-timescale = self.packages.${system}.locust-full.overrideAttrs (
             oldAttrs:
             {
               propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [ self.packages.${system}.extensions.locust-timescale ];
