@@ -6,7 +6,7 @@
 }:
 
 python311.pkgs.buildPythonPackage rec {
-  pname = "locustio";
+  pname = "locust";
   version = "2.15.1";
 
   src = fetchFromGitHub {

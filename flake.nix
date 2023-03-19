@@ -20,7 +20,7 @@
         in
         {
           roundrobin = roundrobin;
-          locustio = pkgs.callPackage ./packages/locustio {
+          locust = pkgs.callPackage ./packages/locust {
             inherit roundrobin;
           };
         }
