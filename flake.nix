@@ -22,10 +22,8 @@
         {
           roundrobin = roundrobin;
           psycogreen = psycogreen;
-          extensions = {
-            locust-timescale = pkgs.callPackage ./packages/locust-timescale {
-              inherit psycogreen;
-            };
+          locust-timescale-extension = pkgs.callPackage ./packages/locust-timescale {
+            inherit psycogreen;
           };
           locust = pkgs.callPackage ./packages/locust {
             inherit roundrobin;
@@ -39,7 +37,7 @@
           locust-timescale = self.packages.${system}.locust-full.overrideAttrs (
             oldAttrs:
             {
-              propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [ self.packages.${system}.extensions.locust-timescale ];
+              propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [ self.packages.${system}.locust-timescale-extension ];
             }
           );
         }
