@@ -17,13 +17,25 @@
         let
           pkgs = nixpkgs.legacyPackages.${system};
           roundrobin = pkgs.callPackage ./packages/roundrobin { };
+          psycogreen = pkgs.callPackage ./packages/psycogreen { };
         in
         {
           roundrobin = roundrobin;
-          psycogreen = pkgs.callPackage ./packages/psycogreen { };
+          psycogreen = psycogreen;
           locust = pkgs.callPackage ./packages/locust {
             inherit roundrobin;
           };
+          extensions = {
+            locust-timescale = pkgs.callPackage ./packages/locust-timescale {
+              inherit psycogreen;
+            };
+          };
+          locust-timescale = self.packages.${system}.locust.overrideAttrs (
+            oldAttrs:
+            {
+              propagatedBuildInputs = oldAttrs.propagatedBuildInputs ++ [ self.packages.${system}.extensions.locust-timescale ];
+            }
+          );
         }
       );
     };
