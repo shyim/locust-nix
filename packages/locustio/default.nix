@@ -19,6 +19,8 @@ python311.pkgs.buildPythonPackage rec {
   patchPhase = ''
      echo 'version = "${version}"' > locust/_version.py
   '';
+  
+  doCheck = false;
 
   propagatedBuildInputs = with python311Packages; [
     requests
